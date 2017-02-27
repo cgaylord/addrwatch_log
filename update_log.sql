@@ -1,4 +1,7 @@
 begin transaction;
+select datetime() || " addrwatch(pre) = " || count(*) from addrwatch;
+select datetime() || " addrwatch_log(pre) = " || count(*) from addrwatch_log;
+
 update addrwatch_log
    set update_time = (
          select max(timestamp)
@@ -25,5 +28,10 @@ select a.mac_address, a.ip_address, a.timestamp, a.timestamp
         where l.mac_address = a.mac_address and
               l.ip_address  = a.ip_address)
 ;
+
 delete from addrwatch;
+
+select datetime() || " addrwatch(post) = " || count(*) from addrwatch;
+select datetime() || " addrwatch_log(post) = " || count(*) from addrwatch_log;
+
 commit;
